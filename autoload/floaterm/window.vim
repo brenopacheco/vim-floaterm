@@ -239,23 +239,14 @@ function! floaterm#window#hide(bufnr) abort
   endif
   let winid = floaterm#config#get(a:bufnr, 'winid', -1)
   let bd_winid = floaterm#config#get(a:bufnr, 'borderwinid', -1)
-  if has('nvim')
-    if s:winexists(winid)
-      call nvim_win_close(winid, v:true)
-    endif
-    if s:winexists(bd_winid)
-      call nvim_win_close(bd_winid, v:true)
-    endif
-  else
-    if s:winexists(winid)
-      try
-        call popup_close(winid)
-      catch
-        if bufwinnr(a:bufnr) > 0
-          silent! execute bufwinnr(a:bufnr) . 'hide'
-        endif
-      endtry
-    endif
+  if s:winexists(winid)
+    try
+      call popup_close(winid)
+    catch
+      if bufwinnr(a:bufnr) > 0
+        silent! execute bufwinnr(a:bufnr) . 'hide'
+      endif
+    endtry
   endif
   silent checktime
 endfunction
